@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "serial-laser-ranger"
-version = "0.1.1"
+version = "0.1.2"
 description = "Python library for serial laser distance measurement modules"
 readme = "README.md"
 license = "MIT"
