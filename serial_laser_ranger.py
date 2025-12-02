@@ -6,9 +6,9 @@ Protocol: 9600 baud, 8 data bits, 1 stop bit, no parity
 
 Basic Usage
 -----------
-    from laser_ranger import LaserRanger
+    from serial_laser_ranger import LaserRanger
 
-    with LaserRanger(port="/dev/cu.usbserial-2210") as ranger:
+    with LaserRanger(port="/dev/ttyUSB0") as ranger:
         distance = ranger.measure_single()
         print(f"{distance:.3f} m")
 
@@ -20,12 +20,12 @@ Continuous Measurement
 
 Quick One-liner
 ---------------
-    from laser_ranger import measure
+    from serial_laser_ranger import measure
     print(f"{measure():.3f} m")
 
 Error Handling
 --------------
-    from laser_ranger import LaserRanger, LaserRangerError
+    from serial_laser_ranger import LaserRanger, LaserRangerError
 
     with LaserRanger() as ranger:
         try:
@@ -50,6 +50,7 @@ Error Codes
     ERR-74: Out of range
 """
 
+import re
 import serial
 import time
 from typing import Optional, Generator, Callable
@@ -250,7 +251,6 @@ class LaserRanger:
         try:
             text = response.decode('ascii', errors='ignore')
             if 'ERR' in text:
-                import re
                 match = re.search(r'ERR-\w+', text)
                 if match:
                     raise LaserRangerError(match.group())
@@ -325,6 +325,9 @@ class LaserRanger:
             for _ in ranger.measure_continuous(callback=log):
                 pass  # Runs until Ctrl+C
         """
+        if not self._serial or not self._serial.is_open:
+            raise RuntimeError("Serial connection not open")
+
         command = bytes([self.address, 0x06, 0x03])
         cs = self._calculate_checksum(command)
         full_command = command + bytes([cs])
