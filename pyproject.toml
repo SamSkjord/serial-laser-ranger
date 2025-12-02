@@ -40,8 +40,10 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/sam/serial-laser-ranger"
-Repository = "https://github.com/sam/serial-laser-ranger"
+Homepage = "https://github.com/SamSkjord/serial-laser-ranger"
+Repository = "https://github.com/SamSkjord/serial-laser-ranger"
+Documentation = "https://github.com/SamSkjord/serial-laser-ranger#readme"
+Issues = "https://github.com/SamSkjord/serial-laser-ranger/issues"
 
 [tool.hatch.build.targets.wheel]
 packages = ["."]

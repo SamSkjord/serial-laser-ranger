@@ -1,5 +1,8 @@
 # serial-laser-ranger
 
+[![PyPI version](https://badge.fury.io/py/serial-laser-ranger.svg)](https://pypi.org/project/serial-laser-ranger/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 Python library for serial laser distance measurement modules.
 
 <p align="center">
