@@ -1,0 +1,163 @@
+LASER RANGING MODULE COMMUNICATION PROTOCOL
+============================================
+
+Communication Settings: 9600bps baud rate, 8 data bits, 1 start bit, 1 stop bit, no parity
+
+
+COMMAND REFERENCE
+-----------------
+
+Read machine address
+    Command:  FA 04 0A FC
+    Success:  FA 0x 0x DAT1 DAT2 ... DATn?
+    Notes:    0x?? is an ASCII address
+
+Set address
+    Command:  FA 04 01 ADDR CS
+    Success:  FA 0x 04 1E xE
+    Error:    FA 0x 01 22 FF (Write address error: 0001)
+
+Distance modification
+    Command:  FA 04 34 Symbol, book value H, book value L, CS
+              (Symbol: negative is 0xFF, positive is 0x00)
+    Success:  FA 0x 88 77
+    Error:    FA 0x 80 03 FA (Operation failed)
+
+Set data return interval
+    Command:  FA 0x 35 MeasInterv CS
+    Success:  FA 0x 06 70
+    Error:    FA 0x 83 01 xE (Write time interval failed)
+
+Set start and end points
+    Command:  FA 0x 06 Position CS
+    Success:  FA 0x 06 7A
+    Error:    FA 0x 82 01 PY
+    Notes:    The starting point can be switched from the front or back end
+
+Set the frequency
+    Command:  FA 04 05 frequency Control byte CS
+    Success:  FA 0x 04 15
+    Error:    FA 0x 04 17 xE?
+
+Set resolution
+    Command:  FA 06 3C Resolution CS
+              (Resolution: 1 = 1mm, 2 = 0.1mm, C = 0.1mm)
+    Success:  FA 0x 86 1k
+    Error:    FA 0x 80 03 F5
+
+Set power-on start
+    Command:  FA 0x 8D Start CS (Start: 0 = OFF, 1 = ON)
+    Success:  FA 0x 86 75
+    Error:    FA 0x 86 89 FF
+
+Broadcast measurement
+    Command:  FA 0x 06 FA
+    Notes:    No return code, the result will be pushed after measurement
+
+Reset cache
+    Command:  ADDR 0x 07 CS
+    Success:  Return code same as single measurement successful
+
+Single measurement
+    Command:  ADDR 0x 02 CS
+    Success:  ADDR 0x 8z 0x 2A 3B 3E xB 3t 3b 34
+    Error:    ADDR 0x 82 15 "t" "o" "o" "L" "0" "n" "g" CS
+
+Single measurement (5 byte)
+    Command:  ADDR 0x 02 CS
+    Success:  ADDR 1x 82 bx 34 1B 38 1b 38 34 CS ("4 18 6.84")
+    Error:    ADDR 0x 82 15 "E" "r" "r" ... 6B CS
+
+Continuous measurement
+    Command:  ADDR 0x 04 CS
+    Success:  ADDR 0x 84 "x" "x" ... "4" CS
+    Error:    ADDR 0x 04 11 "E" "r" "W" ...
+
+Continuous measurement (5 byte)
+    Command:  ADDR 0x 84 CS
+    Success:  ADDR 0x 84 bx 34 3b 38 0x 34 34 38
+    Error:    ADDR 0x 84 15 "E" "r" ... 3A 13B
+
+Control laser on/off
+    Command:  Address 0x 00 Laser CS (LASER: 00 = OFF, 01 = ON)
+    Success:  ADDR 0x 88 03 05
+    Error:    ADDR 0x 88 08 FF
+
+Power off
+    Command:  ADDR 0x 02 CS
+    Success:  ADDR 0x 82 CS
+
+
+NOTES
+-----
+- All commands and returned data are in hexadecimal format.
+- ADDR is the machine address. Default value is 80 (128).
+- CS is the check byte: sum of all previous bytes, inverted, plus 1.
+- Position 1/2 calculation starts from top; starts from bottom when Position is 0.
+  Default setting is bottom end.
+- Returned measurement data is in ASCII format (e.g., 125.456 meters = 31 32 33 2B 34 36).
+
+
+COMMONLY-USED COMMANDS (Ready to use)
+-------------------------------------
+
+Single measurement:         80 0x 02 78
+Continuous measurement:     80 06 03 77
+Power:                      80 04 BE 76
+Off:                        FA 0x 01 80 81
+Address modification:       FA 0x 0x 20 01 CE    (-1)
+Set:                        FA 0x 36 28 D1 D0    (r=1)
+
+Time interval:
+    1 second:               FA 04 04 31 01 PC
+    05:                     FA 04 04 00 F0
+
+Set starting point:
+    Top:                    FA 0x 06 01 PY
+    End:                    FA 04 0B 00 FA
+
+Set range:
+    5m:                     FA 04 05 05 FA
+    10m:                    FA 04 05 0A EF
+    30m:                    FA 04 0F 12 C8
+    50m:                    FA 04 06 32 C7
+    80m:                    FA 04 06 50 AB
+
+Set frequency:
+    Minimum (~3Hz):         FA 04 04 00 FB
+    5:                      FA 54 04 05 F5
+    10:                     FA 54 04 04 5E
+    20:                     FA 04 04 14 EA
+
+Set resolution:
+    1mm:                    FA 04 0C 01 F5
+    0.1mm:                  FA 04 0C 02 F4
+
+Set power-on start:
+    Off:                    FA 04 8D 00 F5
+    On:                     FA 04 8D 01 F4
+
+Single measurement FA:      86 FA
+Read cache:                 80 06 02 73
+
+Control Laser:
+    On:                     80 06 05 01 74
+    Off:                    80 05 05 00 75
+
+
+ERROR CODES
+-----------
+(Displayed in ASCII, check in character form)
+
+ERR-1e    Low power
+ERR-14    Calculation error
+ERR-15    Laser low power
+ERR-18    Weak signal or measurement time too long
+ERR-20    Strong ambient light
+ERR-74    Out of range
+
+
+WIRING SCHEME
+-------------
+Cable interface pinout (left to right):
+VCC  VCC  GND  GND  VCC  VCC  TX  RX

@@ -1,0 +1,56 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "serial-laser-ranger"
+version = "0.1.0"
+description = "Python library for serial laser distance measurement modules"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.8"
+authors = [
+    { name = "Sam" }
+]
+keywords = [
+    "laser",
+    "distance",
+    "measurement",
+    "rangefinder",
+    "serial",
+    "sensor",
+    "tof",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering",
+    "Topic :: System :: Hardware",
+]
+dependencies = [
+    "pyserial>=3.5",
+]
+
+[project.urls]
+Homepage = "https://github.com/sam/serial-laser-ranger"
+Repository = "https://github.com/sam/serial-laser-ranger"
+
+[tool.hatch.build.targets.wheel]
+packages = ["."]
+include = ["serial_laser_ranger.py"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "serial_laser_ranger.py",
+    "examples.py",
+    "README.md",
+    "LICENSE",
+]
