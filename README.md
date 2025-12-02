@@ -2,6 +2,7 @@
 
 [![PyPI version](https://badge.fury.io/py/serial-laser-ranger.svg)](https://pypi.org/project/serial-laser-ranger/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![DeepWiki](https://img.shields.io/badge/DeepWiki-SamSkjord%2Fserial--laser--ranger-blue.svg?logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNNCAxOWg0djJINHptNi0yaDR2NGgtNHptNi00aDR2OGgtNHoiLz48L3N2Zz4=)](https://deepwiki.com/SamSkjord/serial-laser-ranger)
 
 Python library for serial laser distance measurement modules.
 
