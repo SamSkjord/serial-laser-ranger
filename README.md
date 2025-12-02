@@ -30,6 +30,16 @@ Works with generic laser ranging modules commonly found on AliExpress, as well a
 
 > **Note:** Performance may degrade in strong ambient light, extreme temperatures, or with poorly reflective surfaces.
 
+### Real-World Limitations
+
+Despite marketing claims of 1-20Hz measurement rates, the actual maximum is **~4 Hz** (~235ms per measurement). This is a hardware limitation:
+
+- The `set_frequency()` method has no observable effect on measurement speed
+- The `set_data_return_interval()` only adds delay between measurements; it cannot speed them up
+- Maximum continuous rate is achieved with interval set to 0
+
+**Motion constraints:** If the target distance changes faster than ~25 cm/s (0.25 m/s), the sensor will reset and return errors. This limits use for tracking fast-moving objects.
+
 <p align="center">
   <img src="range.png" alt="Measuring Range Diagram" width="500">
 </p>

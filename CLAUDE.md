@@ -25,6 +25,12 @@ docs.txt                 # Protocol reference (transcribed from docs.png)
 - Responses contain ASCII-encoded distance (e.g., "000.619" for 0.619m)
 - Continuous mode streams data; `connect()` resets device state to avoid buffer issues
 
+## Hardware Limitations
+
+- **Max sample rate: ~4 Hz** (235ms per measurement) despite marketing claims of 1-20Hz
+- `set_frequency()` has no effect; `set_data_return_interval()` only adds delay
+- **Motion limit: ~25 cm/s** - faster target movement causes sensor reset/errors
+
 ## Testing
 
 Device connected at: `/dev/cu.usbserial-2210`
